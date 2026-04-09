@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Prep — Apr 8–29, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07090f;
+    --surface: #0f1118;
+    --card: #131620;
+    --border: #1e2235;
+    --border-bright: #2a3050;
+    --text: #d1d5f0;
+    --text-dim: #6b7399;
+    --text-muted: #3d4465;
+
+    --concept: #818cf8;
+    --concept-bg: rgba(129, 140, 248, 0.08);
+    --dsa: #38bdf8;
+    --dsa-bg: rgba(56, 189, 248, 0.08);
+    --sql: #fb923c;
+    --sql-bg: rgba(251, 146, 60, 0.08);
+    --python: #4ade80;
+    --python-bg: rgba(74, 222, 128, 0.08);
+    --reflect: #e879f9;
+    --reflect-bg: rgba(232, 121, 249, 0.08);
+    --off: #4b5563;
+
+    --accent: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+    padding-bottom: 80px;
+  }
+
+  /* Subtle grid texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(56,189,248,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56,189,248,0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(7, 9, 15, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+  }
+
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .header-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .header-title span {
+    color: var(--accent);
+  }
+
+  .progress-label {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+
+  .progress-label strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    box-shadow: 0 0 8px rgba(56,189,248,0.5);
+  }
+
+  /* ─── LAYOUT ─── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── LEGEND ─── */
+  .legend {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .legend-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ─── WEEK BLOCK ─── */
+  .week-block {
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .week-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: var(--surface);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+    gap: 12px;
+  }
+
+  .week-header:hover { background: var(--card); }
+
+  .week-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #fff;
+  }
+
+  .week-theme {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+    flex: 1;
+  }
+
+  .week-stats {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .week-prog-text {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+  }
+
+  .week-chevron {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    transition: transform 0.3s;
+  }
+
+  .week-block.open .week-chevron { transform: rotate(180deg); }
+
+  .week-body {
+    display: none;
+    padding: 0 12px 12px;
+    background: var(--bg);
+  }
+
+  .week-block.open .week-body { display: block; }
+
+  /* ─── DAY CARD ─── */
+  .day-card {
+    margin-top: 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .day-card.day-off {
+    border-color: var(--border);
+    opacity: 0.5;
+  }
+
+  .day-card.day-done { border-color: rgba(74, 222, 128, 0.3); }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--card);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .day-header:hover { background: #171b28; }
+
+  .day-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    min-width: 46px;
+  }
+
+  .day-date {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--accent);
+    min-width: 80px;
+  }
+
+  .day-title {
+    font-size: 0.75rem;
+    color: var(--text);
+    flex: 1;
+    font-weight: 400;
+  }
+
+  .day-off-badge {
+    font-size: 0.62rem;
+    background: rgba(107,114,128,0.15);
+    color: var(--off);
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .day-progress-ring {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+
+  .day-progress-ring svg {
+    transform: rotate(-90deg);
+  }
+
+  .ring-bg { fill: none; stroke: var(--border); stroke-width: 2.5; }
+  .ring-fill {
+    fill: none;
+    stroke: var(--python);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.4s ease, stroke 0.3s;
+  }
+
+  .ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    font-weight: 600;
+    color: var(--text-dim);
+  }
+
+  .day-time-badge {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    min-width: 50px;
+    text-align: right;
+  }
+
+  .day-chevron {
+    color: var(--text-muted);
+    font-size: 0.6rem;
+    transition: transform 0.3s;
+  }
+
+  .day-card.open .day-chevron { transform: rotate(180deg); }
+
+  .day-body {
+    display: none;
+    padding: 8px 16px 14px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .day-card.open .day-body { display: block; }
+
+  /* ─── TASK ─── */
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .task-item:last-child { border-bottom: none; }
+  .task-item:hover { opacity: 0.9; }
+
+  .task-check {
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--border-bright);
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+
+  .task-item.checked .task-check {
+    background: var(--python);
+    border-color: var(--python);
+  }
+
+  .task-item.checked .task-check::after {
+    content: '✓';
+    font-size: 10px;
+    color: #000;
+    font-weight: 700;
+  }
+
+  .task-item.checked .task-text {
+    opacity: 0.35;
+    text-decoration: line-through;
+    text-decoration-color: var(--text-dim);
+  }
+
+  .task-content { flex: 1; min-width: 0; }
+
+  .task-tag {
+    display: inline-block;
+    font-size: 0.57rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 1px 7px;
+    border-radius: 20px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag-concept { background: var(--concept-bg); color: var(--concept); }
+  .tag-dsa     { background: var(--dsa-bg);     color: var(--dsa); }
+  .tag-sql     { background: var(--sql-bg);     color: var(--sql); }
+  .tag-python  { background: var(--python-bg);  color: var(--python); }
+  .tag-reflect { background: var(--reflect-bg); color: var(--reflect); }
+
+  .task-text {
+    font-size: 0.73rem;
+    color: var(--text);
+    line-height: 1.5;
+    transition: opacity 0.2s, text-decoration 0.2s;
+  }
+
+  .task-time {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  /* ─── RESET BUTTON ─── */
+  .reset-btn {
+    display: block;
+    margin: 32px auto 0;
+    background: none;
+    border: 1px solid var(--border-bright);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .reset-btn:hover { color: var(--text); border-color: var(--text-dim); }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    .week-theme { display: none; }
+    .day-title { font-size: 0.68rem; }
+    .task-text { font-size: 0.68rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="header-title">Interview Prep <span>//</span> Apr 8–29, 2026</div>
+      <div class="progress-label">
+        <strong id="done-count">0</strong> / <span id="total-count">0</span> tasks &nbsp;·&nbsp;
+        <strong id="done-pct">0%</strong> complete
+      </div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="global-bar" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--concept)"></div>Concept</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--dsa)"></div>DSA</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--sql)"></div>SQL</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--python)"></div>Python</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--reflect)"></div>Reflect</div>
+  </div>
+
+  <div id="plan-root"></div>
+
+  <button class="reset-btn" onclick="resetAll()">Reset all progress</button>
+</div>
+
+<script>
+const PLAN = [
+  {
+    week: 1,
+    label: "Week 1",
+    dates: "Apr 8–14",
+    theme: "Core pattern re-wiring — Arrays, Hashmaps, Two Pointers, Sliding Window, Binary Search, Stack",
+    days: [
+      {
+        num: 1, date: "Apr 8", day: "Wed", title: "Hashmaps + SQL Window Functions", total: 105,
+        tasks: [
+          { type: "concept", text: "Hashmap patterns — defaultdict, Counter, sorted-key tricks. Watch NeetCode: Group Anagrams.", min: 15 },
+          { type: "dsa",     text: "LC 49 — Group Anagrams (Medium)", min: 35 },
+          { type: "sql",     text: "DataLemur — Histogram of Tweets (Twitter, Medium)", min: 20 },
+          { type: "sql",     text: "DataLemur — Highest-Grossing Items (Amazon, Medium)", min: 20 },
+          { type: "reflect", text: "Write the hashmap grouping template. Write ROW_NUMBER vs RANK vs DENSE_RANK from memory.", min: 15 },
+        ]
+      },
+      {
+        num: 2, date: "Apr 9", day: "Thu", title: "Two Pointers + SQL LAG", total: 105,
+        tasks: [
+          { type: "concept", text: "Two Pointers — sort-first pattern, converge vs same-direction.", min: 10 },
+          { type: "dsa",     text: "LC 15 — 3Sum (Medium)", min: 30 },
+          { type: "dsa",     text: "LC 11 — Container With Most Water (Medium)", min: 20 },
+          { type: "sql",     text: "DataLemur — Y-on-Y Growth Rate (Wayfair, Hard)", min: 30 },
+          { type: "reflect", text: "Write the two-pointer sort-first template. Write LAG() with PARTITION BY from memory.", min: 15 },
+        ]
+      },
+      {
+        num: 3, date: "Apr 10", day: "Fri", title: "Sliding Window + SQL Consecutive", total: 115,
+        tasks: [
+          { type: "concept", text: "Sliding Window — expand/shrink template. Watch NeetCode: Longest Substring Without Repeating Characters.", min: 15 },
+          { type: "dsa",     text: "LC 424 — Longest Repeating Character Replacement (Medium)", min: 40 },
+          { type: "sql",     text: "DataLemur — Tweets Rolling Averages (Twitter, Medium)", min: 20 },
+          { type: "sql",     text: "DataLemur — Consecutive Filing Years (UnitedHealth, Hard)", min: 25 },
+          { type: "reflect", text: "Write the sliding window expand/shrink template. Write the ROW_NUMBER minus dense rank trick for consecutive group detection.", min: 15 },
+        ]
+      },
+      {
+        num: 4, date: "Apr 11", day: "Sat", title: "Sliding Window Hard + SQL Self-Join", total: 105,
+        tasks: [
+          { type: "dsa",     text: "LC 76 — Minimum Window Substring (Hard) — two hashmaps, shrink from left when valid. The most important sliding window problem.", min: 60 },
+          { type: "sql",     text: "DataLemur — Repeated Payments (Stripe, Hard) — self-join on datetime ranges.", min: 30 },
+          { type: "reflect", text: "Step through LC 76 even if you solved it. Write the self-join date comparison pattern for SQL.", min: 15 },
+        ]
+      },
+      {
+        num: 5, date: "Apr 12", day: "Sun", title: "OFF", total: 0, off: true, tasks: []
+      },
+      {
+        num: 6, date: "Apr 13", day: "Mon", title: "Binary Search + SQL CTE", total: 115,
+        tasks: [
+          { type: "concept", text: "Binary Search — exact match, left boundary, right boundary variants. Watch NeetCode: Find Minimum in Rotated Sorted Array.", min: 15 },
+          { type: "dsa",     text: "LC 153 — Find Minimum in Rotated Sorted Array (Medium)", min: 35 },
+          { type: "dsa",     text: "LC 33 — Search in Rotated Sorted Array (Medium)", min: 30 },
+          { type: "sql",     text: "DataLemur — Supercloud Customer (Microsoft, Medium)", min: 25 },
+          { type: "reflect", text: "Write all three binary search templates with the invariant condition. The lo <= hi vs lo < hi distinction is where most bugs happen.", min: 10 },
+        ]
+      },
+      {
+        num: 7, date: "Apr 14", day: "Tue", title: "Binary Search on Answer + SQL", total: 115,
+        tasks: [
+          { type: "dsa",     text: "LC 875 — Koko Eating Bananas (Medium) — binary search on the answer, not the array", min: 35 },
+          { type: "dsa",     text: "LC 128 — Longest Consecutive Sequence (Medium) — O(n) hashmap", min: 30 },
+          { type: "sql",     text: "DataLemur — Card Launch Success (JPMorgan, Medium)", min: 20 },
+          { type: "sql",     text: "DataLemur — Signup Activation Rate (TikTok, Medium)", min: 20 },
+          { type: "reflect", text: "Binary search on answer pattern — when the solution space is monotone, binary search on it. Write all Week 1 DSA patterns from memory.", min: 10 },
+        ]
+      },
+    ]
+  },
+  {
+    week: 2,
+    label: "Week 2",
+    dates: "Apr 15–21",
+    theme: "Stack, Linked Lists, Trees, Heaps, Graphs — Two Python sessions",
+    days: [
+      {
+        num: 8, date: "Apr 15", day: "Wed", title: "Monotonic Stack + SQL", total: 115,
+        tasks: [
+          { type: "concept", text: "Monotonic Stack — LIFO, when does it help? Watch NeetCode: Daily Temperatures.", min: 10 },
+          { type: "dsa",     text: "LC 739 — Daily Temperatures (Medium)", min: 35 },
+          { type: "dsa",     text: "LC 853 — Car Fleet (Medium)", min: 30 },
+          { type: "sql",     text: "DataLemur — International Call Percentage (Verizon, Medium)", min: 25 },
+          { type: "reflect", text: "Write the monotonic stack template — increasing and decreasing variants. Note NULL handling in JOINs and COALESCE.", min: 15 },
+        ]
+      },
+      {
+        num: 9, date: "Apr 16", day: "Thu", title: "Stack Hard + SQL Retention + Funnel", total: 120,
+        tasks: [
+          { type: "dsa",     text: "LC 84 — Largest Rectangle in Histogram (Hard) — stack stores indices, not values. High frequency at Databricks and Stripe.", min: 60 },
+          { type: "sql",     text: "DataLemur — Active User Retention (Meta, Hard)", min: 30 },
+          { type: "sql",     text: "StrataScratch — User Activity Funnel (Airbnb/DoorDash, Medium) — step-by-step funnel, count users per event stage", min: 15 },
+          { type: "reflect", text: "The 'stack stores indices' insight is the key in LC 84. SQL: funnel = sequential LEFT JOINs on user_id across event stages.", min: 15 },
+        ]
+      },
+      {
+        num: 10, date: "Apr 17", day: "Fri", title: "Linked Lists + SQL Date", total: 110,
+        tasks: [
+          { type: "concept", text: "Linked Lists in Python — node class, pointer manipulation, common bugs.", min: 10 },
+          { type: "dsa",     text: "LC 19 — Remove Nth Node from End (Medium) — fast/slow pointer with gap", min: 25 },
+          { type: "dsa",     text: "LC 143 — Reorder List (Medium) — find midpoint, reverse second half, merge", min: 35 },
+          { type: "sql",     text: "DataLemur — Photoshop Revenue Trend (Adobe, Hard)", min: 25 },
+          { type: "reflect", text: "Fast/slow pointer template. SQL: window with multiple category filters.", min: 15 },
+        ]
+      },
+      {
+        num: 11, date: "Apr 18", day: "Sat", title: "LRU Cache + Python Session 1", total: 115,
+        tasks: [
+          { type: "dsa",     text: "LC 146 — LRU Cache (Medium) — hashmap + doubly linked list from scratch. Budget the full 50 min. MLE interviews explicitly test this.", min: 50 },
+          { type: "python",  text: "StrataScratch — Finding User Purchases (Amazon, Medium) — groupby + shift", min: 17 },
+          { type: "python",  text: "StrataScratch — Workers With The Highest Salary (Oracle, Medium) — rank + filter", min: 17 },
+          { type: "python",  text: "StrataScratch — Popularity Percentage (Meta, Hard) — cross-join + count", min: 16 },
+          { type: "reflect", text: "LRU Cache from memory in pseudocode. Write groupby, merge, rank syntax you struggled with — this becomes your Python cheat sheet.", min: 15 },
+        ]
+      },
+      {
+        num: 12, date: "Apr 19", day: "Sun", title: "OFF", total: 0, off: true, tasks: []
+      },
+      {
+        num: 13, date: "Apr 20", day: "Mon", title: "Trees BFS + SQL", total: 110,
+        tasks: [
+          { type: "concept", text: "Trees BFS — queue-based level order, collections.deque. Watch NeetCode: Level Order Traversal.", min: 15 },
+          { type: "dsa",     text: "LC 102 — Binary Tree Level Order Traversal (Medium)", min: 30 },
+          { type: "dsa",     text: "LC 199 — Binary Tree Right Side View (Medium) — take the last element at each level", min: 25 },
+          { type: "sql",     text: "DataLemur — Odd and Even Measurements (Google, Hard)", min: 25 },
+          { type: "reflect", text: "BFS tree template — queue, pop left, add children. SQL: MOD(ROW_NUMBER(), 2) for odd/even split then conditional aggregation.", min: 15 },
+        ]
+      },
+      {
+        num: 14, date: "Apr 21", day: "Tue", title: "Trees DFS + Python Session 2", total: 120,
+        tasks: [
+          { type: "concept", text: "Trees DFS — recursive structure, when DFS beats BFS.", min: 10 },
+          { type: "dsa",     text: "LC 98 — Validate Binary Search Tree (Medium) — DFS with min/max bounds", min: 35 },
+          { type: "dsa",     text: "LC 124 — Binary Tree Maximum Path Sum (Hard) — DFS with global max state. If stuck past 25 min, read the solution.", min: 40 },
+          { type: "python",  text: "StrataScratch — Top Businesses with Most Reviews (Yelp, Medium) — value_counts + sort", min: 20 },
+          { type: "reflect", text: "DFS with global variable pattern. Python: value_counts() vs groupby().size() — when to use which.", min: 15 },
+        ]
+      },
+    ]
+  },
+  {
+    week: 3,
+    label: "Week 3",
+    dates: "Apr 22–29",
+    theme: "Heaps, Graphs BFS/DFS, Intervals, DP 1D — Two Python sessions + Full Mock",
+    days: [
+      {
+        num: 15, date: "Apr 22", day: "Wed", title: "Heaps + SQL Median", total: 105,
+        tasks: [
+          { type: "concept", text: "Heaps in Python — heapq is min-heap, negate for max-heap. Watch NeetCode: Kth Largest.", min: 15 },
+          { type: "dsa",     text: "LC 355 — Design Twitter (Medium) — heap + OOP, more MLE-relevant than basic kth problems", min: 40 },
+          { type: "sql",     text: "DataLemur — Median Employee Salary (LinkedIn, Hard) — try PERCENTILE_CONT first, then manual ROW_NUMBER approach", min: 35 },
+          { type: "reflect", text: "heapq push/pop syntax from memory. Manual median — write the ROW_NUMBER + HAVING pattern without reference.", min: 15 },
+        ]
+      },
+      {
+        num: 16, date: "Apr 23", day: "Thu", title: "Heaps Hard + SQL Running Total", total: 105,
+        tasks: [
+          { type: "dsa",     text: "LC 295 — Find Median from Data Stream (Hard) — two heaps pattern. Max-heap for lower half, min-heap for upper half.", min: 60 },
+          { type: "sql",     text: "DataLemur — Monthly Merchant Balance (Etsy, Hard) — running SUM() OVER (ORDER BY date)", min: 30 },
+          { type: "reflect", text: "Two-heap balancing logic — when to rebalance and how. SQL: running total vs cumulative distinct — know the difference.", min: 15 },
+        ]
+      },
+      {
+        num: 17, date: "Apr 24", day: "Fri", title: "Graphs BFS + Python Session 3", total: 120,
+        tasks: [
+          { type: "concept", text: "Graphs BFS — adjacency list, visited set, queue. Watch NeetCode: Number of Islands.", min: 15 },
+          { type: "dsa",     text: "LC 200 — Number of Islands (Medium) — grid BFS, most commonly asked graph problem", min: 35 },
+          { type: "dsa",     text: "LC 994 — Rotting Oranges (Medium) — multi-source BFS", min: 25 },
+          { type: "python",  text: "StrataScratch — Host Popularity Rental Prices (Airbnb, Hard) — groupby + agg + rank", min: 15 },
+          { type: "python",  text: "StrataScratch — Highest Energy Consumption (Meta, Medium) — concat + idxmax", min: 15 },
+          { type: "reflect", text: "BFS template with visited set. Python: groupby().agg() with named aggregations vs groupby().transform().", min: 15 },
+        ]
+      },
+      {
+        num: 18, date: "Apr 25", day: "Sat", title: "Graphs DFS + Intervals + SQL", total: 110,
+        tasks: [
+          { type: "concept", text: "Graphs DFS + Topological Sort — 3-state DFS (unvisited, visiting, visited).", min: 10 },
+          { type: "dsa",     text: "LC 207 — Course Schedule (Medium) — DFS cycle detection", min: 35 },
+          { type: "dsa",     text: "LC 56 — Merge Intervals (Medium) — sort by start, greedily extend. High frequency at Lyft, Instacart, Airbnb.", min: 30 },
+          { type: "sql",     text: "DataLemur — Average Post Hiatus II (Meta, Medium)", min: 20 },
+          { type: "reflect", text: "Topological sort 3-state DFS template. Read Course Schedule II solution (don't full-code it). Write the Merge Intervals greedy logic from memory.", min: 15 },
+        ]
+      },
+      {
+        num: 19, date: "Apr 26", day: "Sun", title: "OFF", total: 0, off: true, tasks: []
+      },
+      {
+        num: 20, date: "Apr 27", day: "Mon", title: "DP 1D + SQL Interval Overlap", total: 100,
+        tasks: [
+          { type: "concept", text: "Dynamic Programming — overlapping subproblems, memoization vs tabulation, defining state. Watch NeetCode: Coin Change.", min: 15 },
+          { type: "dsa",     text: "LC 322 — Coin Change (Medium) — bottom-up tabulation, the cleanest DP intro", min: 40 },
+          { type: "sql",     text: "DataLemur — Consulting Bench Time (Accenture, Hard) — date range intersection logic", min: 30 },
+          { type: "reflect", text: "DP structure — define state, write recurrence, set base case. Coin Change recurrence from memory. SQL: interval overlap detection pattern.", min: 15 },
+        ]
+      },
+      {
+        num: 21, date: "Apr 28", day: "Tue", title: "DP 1D + Python Session 4", total: 110,
+        tasks: [
+          { type: "dsa",     text: "LC 300 — Longest Increasing Subsequence (Medium) — O(n log n) patience sorting vs O(n²) tabulation, know both", min: 35 },
+          { type: "dsa",     text: "LC 139 — Word Break (Medium) — DP with hashset lookup", min: 35 },
+          { type: "python",  text: "StrataScratch — Popularity of Hack (Meta, Medium) — groupby + pivot-style aggregation", min: 12 },
+          { type: "python",  text: "StrataScratch — Premium vs Freemium (Microsoft, Medium) — merge + boolean comparison", min: 13 },
+          { type: "reflect", text: "LIS vs Word Break — two distinct DP paradigms. Write groupby, merge, rank from memory one final time.", min: 15 },
+        ]
+      },
+      {
+        num: 22, date: "Apr 29", day: "Wed", title: "FULL MOCK", total: 110,
+        tasks: [
+          { type: "dsa",     text: "LeetCode — filter Stripe, Databricks, or DoorDash company tag. 1 unseen Hard problem. If stuck past 25 min, write pseudocode and verbalize your approach.", min: 60 },
+          { type: "sql",     text: "2 unseen DataLemur Hard problems — 17 min each, strict timer, no hints until both are submitted.", min: 35 },
+          { type: "reflect", text: "Which pattern broke you today? Write it down. That is what you review the night before every real interview.", min: 15 },
+        ]
+      },
+    ]
+  }
+];
+
+// ── State ──────────────────────────────────────────────────────
+const STORE_KEY = 'interview_prep_2026';
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+  catch { return {}; }
+}
+
+function saveState(state) {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+  catch {}
+}
+
+let state = loadState();
+
+function taskKey(dayNum, taskIdx) { return `d${dayNum}_t${taskIdx}`; }
+
+function isChecked(dayNum, taskIdx) {
+  return !!state[taskKey(dayNum, taskIdx)];
+}
+
+function toggleTask(dayNum, taskIdx) {
+  const k = taskKey(dayNum, taskIdx);
+  state[k] = !state[k];
+  saveState(state);
+  updateAll();
+}
+
+function resetAll() {
+  if (!confirm('Reset all progress? This cannot be undone.')) return;
+  state = {};
+  saveState(state);
+  updateAll();
+}
+
+// ── Render ────────────────────────────────────────────────────
+function render() {
+  const root = document.getElementById('plan-root');
+  root.innerHTML = '';
+
+  PLAN.forEach((week, wi) => {
+    const wDiv = document.createElement('div');
+    wDiv.className = 'week-block open';
+    wDiv.id = `week-${week.week}`;
+
+    wDiv.innerHTML = `
+      <div class="week-header" onclick="toggleWeek(${week.week})">
+        <span class="week-label">${week.label} <span style="color:var(--text-dim);font-weight:400;font-size:0.7rem">${week.dates}</span></span>
+        <span class="week-theme">${week.theme}</span>
+        <div class="week-stats">
+          <span class="week-prog-text" id="week-prog-${week.week}">0 / 0</span>
+          <span class="week-chevron">▲</span>
+        </div>
+      </div>
+      <div class="week-body" id="week-body-${week.week}">
+        ${week.days.map(day => renderDay(day)).join('')}
+      </div>
+    `;
+    root.appendChild(wDiv);
+  });
+
+  // attach task toggle listeners
+  document.querySelectorAll('.task-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const dn = +el.dataset.day;
+      const ti = +el.dataset.task;
+      toggleTask(dn, ti);
+    });
+  });
+
+  updateAll();
+}
+
+function renderDay(day) {
+  if (day.off) {
+    return `
+      <div class="day-card day-off">
+        <div class="day-header" style="cursor:default">
+          <span class="day-num">Day ${day.num}</span>
+          <span class="day-date">${day.date} ${day.day}</span>
+          <span class="day-title" style="color:var(--text-dim)">Rest Day</span>
+          <span class="day-off-badge">OFF</span>
+        </div>
+      </div>`;
+  }
+
+  const tasks = day.tasks.map((t, i) => `
+    <div class="task-item" data-day="${day.num}" data-task="${i}" id="task-${day.num}-${i}">
+      <div class="task-check"></div>
+      <div class="task-content">
+        <span class="task-tag tag-${t.type}">${t.type}</span>
+        <span class="task-text">${escHtml(t.text)}</span>
+      </div>
+      <div class="task-time">${t.min}m</div>
+    </div>`).join('');
+
+  const circumference = 2 * Math.PI * 13; // r=13
+
+  return `
+    <div class="day-card open" id="day-card-${day.num}">
+      <div class="day-header" onclick="toggleDay(${day.num})">
+        <span class="day-num">Day ${day.num}</span>
+        <span class="day-date">${day.date} ${day.day}</span>
+        <span class="day-title">${escHtml(day.title)}</span>
+        <div class="day-progress-ring" id="ring-${day.num}">
+          <svg width="32" height="32" viewBox="0 0 32 32">
+            <circle class="ring-bg" cx="16" cy="16" r="13"/>
+            <circle class="ring-fill" id="ring-fill-${day.num}" cx="16" cy="16" r="13"
+              stroke-dasharray="${circumference}"
+              stroke-dashoffset="${circumference}"/>
+          </svg>
+          <div class="ring-text" id="ring-text-${day.num}">0/${day.tasks.length}</div>
+        </div>
+        <span class="day-time-badge">${day.total}m</span>
+        <span class="day-chevron">▲</span>
+      </div>
+      <div class="day-body" id="day-body-${day.num}">
+        ${tasks}
+      </div>
+    </div>`;
+}
+
+function toggleWeek(weekNum) {
+  const block = document.getElementById(`week-${weekNum}`);
+  block.classList.toggle('open');
+}
+
+function toggleDay(dayNum) {
+  const card = document.getElementById(`day-card-${dayNum}`);
+  card.classList.toggle('open');
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Update ─────────────────────────────────────────────────────
+function updateAll() {
+  let totalTasks = 0, totalDone = 0;
+  const circumference = 2 * Math.PI * 13;
+
+  PLAN.forEach(week => {
+    let weekTotal = 0, weekDone = 0;
+
+    week.days.forEach(day => {
+      if (day.off) return;
+      const n = day.tasks.length;
+      let done = 0;
+
+      day.tasks.forEach((t, i) => {
+        const checked = isChecked(day.num, i);
+        const el = document.getElementById(`task-${day.num}-${i}`);
+        if (el) el.classList.toggle('checked', checked);
+        if (checked) done++;
+      });
+
+      // ring
+      const fill = document.getElementById(`ring-fill-${day.num}`);
+      const txt  = document.getElementById(`ring-text-${day.num}`);
+      const card = document.getElementById(`day-card-${day.num}`);
+      if (fill && txt) {
+        const pct = n > 0 ? done / n : 0;
+        fill.style.strokeDashoffset = circumference * (1 - pct);
+        fill.style.stroke = done === n && n > 0 ? 'var(--python)' : 'var(--accent)';
+        txt.textContent = `${done}/${n}`;
+        if (card) card.classList.toggle('day-done', done === n && n > 0);
+      }
+
+      weekDone += done; weekTotal += n;
+      totalDone += done; totalTasks += n;
+    });
+
+    const prog = document.getElementById(`week-prog-${week.week}`);
+    if (prog) prog.textContent = `${weekDone} / ${weekTotal}`;
+  });
+
+  const pct = totalTasks > 0 ? Math.round(totalDone / totalTasks * 100) : 0;
+  document.getElementById('done-count').textContent = totalDone;
+  document.getElementById('total-count').textContent = totalTasks;
+  document.getElementById('done-pct').textContent = pct + '%';
+  document.getElementById('global-bar').style.width = pct + '%';
+}
+
+// ── Init ──────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
